@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import TodoInput from '/TodoInput'
+import TodoInput from './TodoInput'
 import TodoItem from './TodoItem'
 
 class App extends Component {
@@ -22,7 +22,7 @@ class App extends Component {
         <TodoItem todo = {item}/>
       </li>);
     });
-    
+
     return (
       <div className="App">
         <h1>My to-do list</h1>
