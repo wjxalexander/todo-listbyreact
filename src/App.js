@@ -34,13 +34,21 @@ class App extends Component {
         You should either use quotes (for string values) or curly braces (for expressions), but not both in the same attribute.
           <input type = "text" value ={this.state.newToDo}/>
         */}
-        <TodoInput content ={this.state.newToDo} onSubmit={this.addTodo.bind(this)}/>
+         <TodoInput content={this.state.newTodo} 
+            onChange={this.changeTitle.bind(this)}
+            onSubmit={this.addTodo.bind(this)} />
         </div>
         <ol>
           {todos}
         </ol>
       </div>
     )
+  }
+  changeTitle(event){
+    this.setState({
+      newTodo: event.target.value,
+      todoList: this.state.todoList
+    })
   }
   addTodo(event){
     console.log('add a todo');

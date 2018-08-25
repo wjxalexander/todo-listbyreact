@@ -3,7 +3,8 @@ class TodoInput extends Component{
     render(){
         console.log('intodoinput');
         console.log(this.props.content);
-        return <input type = "text" defaultValue ={this.props.content}
+        return <input type="text" value={this.props.content}
+            onChange={this.changeTitle.bind(this)}
             onKeyPress={this.submit.bind(this)}/>
     }
     submit(e){
@@ -12,5 +13,8 @@ class TodoInput extends Component{
             this.props.onSubmit(e);
         }
     }
+    changeTitle(e){
+        this.props.onChange(e)
+      }
 }
 export default TodoInput;
