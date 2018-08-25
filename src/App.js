@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      newToDo: 'test',
+      newToDo: 'weee',
       toDoList: [
         {id: 1, title: '第一个代办'},
         {id: 2, title: '第一个代办'},
@@ -44,5 +44,4 @@ class App extends Component {
     )
   }
 }
-
 export default App;
