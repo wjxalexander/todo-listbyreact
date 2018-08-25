@@ -19,7 +19,8 @@ class App extends Component {
     let todos = this.state.toDoList.map((item,index)=>{
       return (// 为什么这里要加个括号？这是动手题3 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
       <li key={index}>
-        <TodoItem todo = {item} onToggle={this.toggle.bind(this)}/>
+        <TodoItem todo = {item} onToggle={this.toggle.bind(this)}
+          onDelete = {this.delete.bind(this)}/>
       </li>);
     });
     console.log(todos);
@@ -44,6 +45,7 @@ class App extends Component {
       </div>
     )
   }
+
   toggle(e,todo){
     todo.status = todo.status === 'completed' ? '' : 'completed'
     this.setState(this.state) 
@@ -66,6 +68,10 @@ class App extends Component {
       newToDo:'',
       toDoList:this.state.toDoList
     })
+  }
+  delete(event,todo){
+    todo.delete = true
+    this.setState(this.state)
   }
 }
 export default App;
