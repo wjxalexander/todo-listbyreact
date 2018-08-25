@@ -9,21 +9,20 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      newToDo: 'weee',
+      newToDo: '',
       toDoList: [
-        {id: 1, title: '第一个代办'},
-        {id: 2, title: '第一个代办'},
-        {id: 3, title: '第一个代办'},
+        
       ]
     }
   }
   render() {
     let todos = this.state.toDoList.map((item,index)=>{
       return (// // 为什么这里要加个括号？这是动手题3 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
-      <li>
+      <li key={index}>
         <TodoItem todo = {item}/>
       </li>);
     });
+    console.log(todos);
 
     return (
       <div className="App">
@@ -35,7 +34,7 @@ class App extends Component {
         You should either use quotes (for string values) or curly braces (for expressions), but not both in the same attribute.
           <input type = "text" value ={this.state.newToDo}/>
         */}
-        <TodoInput content ={this.state.newToDo} onSubmit={this.addTodo}/>
+        <TodoInput content ={this.state.newToDo} onSubmit={this.addTodo.bind(this)}/>
         </div>
         <ol>
           {todos}
@@ -43,8 +42,23 @@ class App extends Component {
       </div>
     )
   }
-  addTodo(){
+  addTodo(event){
     console.log('add a todo');
+    this.state.toDoList.push({
+      id: idMaker(),
+      title: event.target.value,
+      status:null,
+      delete: false
+    })
+    this.setState({
+      newToDo:'',
+      toDoList:this.state.toDoList
+    })
   }
 }
 export default App;
+let id = 0;
+function idMaker(){
+  id++;
+  return id
+}
