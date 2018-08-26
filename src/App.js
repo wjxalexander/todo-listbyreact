@@ -49,18 +49,19 @@ class App extends Component {
       </div>
     )
   }
+  componentDidUpdate(){
+    localStore.save('toDOList',this.state.toDoList);
+  }
 
   toggle(e,todo){
     todo.status = todo.status === 'completed' ? '' : 'completed'
     this.setState(this.state) 
-    localStore.save('toDOList',this.state.toDoList);
   }
   changeTitle(event){
     this.setState({
       newTodo: event.target.value,
       toDoList: this.state.toDoList
     })
-    localStore.save('toDoList',this.state.toDoList);
   }
   addTodo(event){
     console.log('add a todo');
@@ -74,14 +75,12 @@ class App extends Component {
       newToDo:'',
       toDoList: this.state.toDoList//更新todolist,state 是不能直接修改的
     })
-    localStore.save('toDoList',this.state.toDoList);
     console.log('修改后的todolist是',this.state.toDoList)
   }
   delete(event, todo){
     console.log("我要删除了")
     todo.delete = true
     this.setState(this.state)
-    localStore.save('toDoList',this.state.toDoList);
   }
 }
 export default App;
