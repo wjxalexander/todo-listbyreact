@@ -5,11 +5,13 @@ import TodoItem from './TodoItem'
 import 'normalize.css'
 import './reset.css'
 import UserDialog from './UserDialog';
+import {getCurrentUser, signOut} from './leanCloud'
 
 class App extends Component {
   constructor(props){
     super(props)
     this.state = {
+      user: getCurrentUser()||{},
       newToDo: '',
       toDoList:[]//初始化为[]
     }
@@ -26,11 +28,13 @@ class App extends Component {
         onDelete = {this.delete.bind(this)}/>
       </li>);
     });
-    console.log("todonowis",todos);
+    console.log("todo now is",todos);
 
     return (
       <div className="App">
-        <h1>My to-do list</h1>
+        <h1>{this.state.user.username||'我'}的待办
+          {this.state.user.id ? <button onClick={this.signOut.bind(this)}>登出</button> : null}
+        </h1>
         <div className = 'inputWrapper'>
         {/*两个注意的点：
         1. If a tag is empty, you may close it immediately with />, like XML
@@ -46,9 +50,25 @@ class App extends Component {
         <ol className = "todoList">
           {todos}
         </ol>
-        <UserDialog />
+        {this.state.user.id ? 
+          null : 
+          <UserDialog 
+            onSignUp={this.onSignUpOrSignIn.bind(this)} 
+            onSignIn={this.onSignUpOrSignIn.bind(this)}/>}
       </div>
     )
+  }
+  signOut(){
+    signOut()
+    let stateCopy = JSON.parse(JSON.stringify(this.state))
+    stateCopy.user = {}
+    this.setState(stateCopy)
+  }
+
+  onSignUpOrSignIn(user){
+    let stateCopy = JSON.parse(JSON.stringify(this.state)) 
+    stateCopy.user = user
+    this.setState(stateCopy)
   }
   componentDidUpdate(){
   }
