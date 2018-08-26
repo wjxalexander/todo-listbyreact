@@ -6,7 +6,21 @@ import 'normalize.css'
 import './reset.css'
 import UserDialog from './UserDialog';
 import {getCurrentUser, signOut} from './leanCloud'
+import AV from './leanCloud'
 
+  // 声明类型
+  var TodoFolder = AV.Object.extend('TodoFolder');
+  // 新建对象
+  var todoFolder = new TodoFolder();
+  // 设置名称
+  todoFolder.set('name','工作');
+  // 设置优先级
+  todoFolder.set('priority',1);
+  todoFolder.save().then(function (todo) {
+    console.log('objectId is ' + todo.id);
+  }, function (error) {
+    console.error(error);
+  });
 class App extends Component {
   constructor(props){
     super(props)
@@ -58,17 +72,18 @@ class App extends Component {
       </div>
     )
   }
+  deepCopy(){
+    return JSON.parse(JSON.stringify(this.state))
+  }
   signOut(){
     signOut()
-    let stateCopy = JSON.parse(JSON.stringify(this.state))
-    stateCopy.user = {}
-    this.setState(stateCopy)
+    this.deepCopy().user = {}
+    this.setState(this.deepCopy())
   }
 
   onSignUpOrSignIn(user){
-    let stateCopy = JSON.parse(JSON.stringify(this.state)) 
-    stateCopy.user = user
-    this.setState(stateCopy)
+    this.deepCopy().user = user
+    this.setState(this.deepCopy())
   }
   componentDidUpdate(){
   }
