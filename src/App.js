@@ -5,22 +5,9 @@ import TodoItem from './TodoItem'
 import 'normalize.css'
 import './reset.css'
 import UserDialog from './UserDialog';
-import {getCurrentUser, signOut} from './leanCloud'
+import {getCurrentUser, signOut, TodoModel} from './leanCloud'
 import AV from './leanCloud'
 
-  // 声明类型
-  var TodoFolder = AV.Object.extend('TodoFolder');
-  // 新建对象
-  var todoFolder = new TodoFolder();
-  // 设置名称
-  todoFolder.set('name','工作');
-  // 设置优先级
-  todoFolder.set('priority',1);
-  todoFolder.save().then(function (todo) {
-    console.log('objectId is ' + todo.id);
-  }, function (error) {
-    console.error(error);
-  });
 class App extends Component {
   constructor(props){
     super(props)
@@ -29,17 +16,27 @@ class App extends Component {
       newToDo: '',
       toDoList:[]//初始化为[]
     }
+  
+
+  let user = getCurrentUser()
+  if (user) {
+    TodoModel.getByUser(user, (todos) => {
+      let stateCopy = JSON.parse(JSON.stringify(this.state))
+      stateCopy.todoList = todos
+      this.setState(stateCopy)
+    })
   }
+}
 
   render() {
     let todos = this.state.toDoList
       .filter((item)=>!item.delete)//获取delete属性
-      .map((item,index)=>{
+      .map((item,index)=> {
       return (// 为什么这里要加个括号？这是动手题3 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
       <li key={index}>
-        <TodoItem todo = {item} 
-        onToggle = {this.toggle.bind(this)}
-        onDelete = {this.delete.bind(this)}/>
+         <TodoItem todo={item} 
+          onToggle={this.toggle.bind(this)}
+          onDelete = {this.delete.bind(this)}/>
       </li>);
     });
     console.log("todo now is",todos);
@@ -89,8 +86,14 @@ class App extends Component {
   }
 
   toggle(e,todo){
+    let oldStatus = todo.status
     todo.status = todo.status === 'completed' ? '' : 'completed'
-    this.setState(this.state) 
+    TodoModel.update(todo, () => {
+      this.setState(this.state)
+    }, (error) => {
+      todo.status = oldStatus
+      this.setState(this.state)
+    }) 
   }
   changeTitle(event){
     this.setState({
@@ -100,30 +103,34 @@ class App extends Component {
   }
   addTodo(event){
     console.log('add a todo');
-    this.state.toDoList.push({//这里添加数组的内容
-      id: idMaker(),
+    let newToDo={
       title: event.target.value,
-      status:null, 
+      status:'', 
       delete: false
-    })
-    this.setState({
-      newToDo:'',
-      toDoList: this.state.toDoList//更新todolist,state 是不能直接修改的
-    })
+    }
     console.log('修改后的todolist是',this.state.toDoList)
-  }
+  
+  TodoModel.create(newToDo, (id) => {
+    newToDo.id = id
+    this.state.todoList.push(newToDo)
+    this.setState({
+      newToDo: '',
+      todoList: this.state.todoList
+    })
+  }, (error) => {
+    console.log(error)
+  })
+}
   delete(event, todo){
     console.log("我要删除了")
-    todo.delete = true
-    this.setState(this.state)
+    TodoModel.destroy(todo.id, () => {
+      todo.deleted = true
+      this.setState(this.state)
+    })
   }
 }
 export default App;
-let id = 0;
-function idMaker(){
-  id++;
-  return id
-}
+
 /*
 动手题1： import React from 'react'; // 为什么要 import React
 class Welcome extends React.Component {
