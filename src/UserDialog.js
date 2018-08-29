@@ -15,15 +15,16 @@ export default class UserDialog extends Component{
               email: '',
               username: '',
               password:'',
-              emailStatus: false
+              emailStatus: true,//用于email验证
+              nameStatus: true,//用于名字验证
+              passwordStatus: true//用于密码验证
           }
         }
       }
 
       signUp(e){
         e.preventDefault()
-        let {email, username, password} = this.state.formData//这里加正则
-        {console.log('1')}
+        let {email, username, password,emailStatus,nameStatus,passwordStatus} = this.state.formData
         let success = (user)=>{
           this.props.onSignUp.call(null, user)
       }
@@ -38,11 +39,17 @@ export default class UserDialog extends Component{
           break
       }
     }
-    signUp(email,username, password, success, error)
+    if(emailStatus&&nameStatus&&passwordStatus){//必须满足三个条件才能提交
+      signUp(email,username, password, success, error)
+    }else{//否则不可以提交
+      return false;
+    }
+    
+    console.log('insignup',this.state.formData)
   }
   signIn(e){
     e.preventDefault()
-    let {username, password} = this.state.formData
+    let {username, password,nameStatus,passwordStatus} = this.state.formData
     let success = (user)=>{
       this.props.onSignIn.call(null, user)
     }
@@ -56,26 +63,46 @@ export default class UserDialog extends Component{
           break
       }
     }
-    signIn(username, password, success, error)
+    if(nameStatus&&passwordStatus){
+      signIn(username, password, success, error)
+    }else{
+      return false;
+    }
   }
-      changeFormData(key,e){
+  changeFormData(key,e){
         // this.state.formData.username = e.target.value
         // this.setState(this.state)
         // 像上面这样写会看到一个警告 warning  Do not mutate state directly. Use setState()
+        var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
         let stateCopy = JSON.parse(JSON.stringify(this.state))  // 用 JSON 深拷贝
         stateCopy.formData[key] = e.target.value;
+        console.log("stateCopyis",stateCopy,typeof(stateCopy));
+        console.log(reg.test(stateCopy.formData.emailStatus))
+        //email验证
+        if(reg.test(stateCopy.formData.email)){
+          stateCopy.formData.emailStatus = true;
+        }else{
+          stateCopy.formData.emailStatus = false;
+        }
+        //用户名认证:用户名必须大于三个字符
+        if(stateCopy.formData.username.length >= 3){
+          stateCopy.formData.nameStatus = true;
+        }else{
+          stateCopy.formData.nameStatus = false;
+        }
+        // 密码认证：密码必须不小于6个字符
+        if(stateCopy.formData.password.length >= 6){
+          stateCopy.formData.passwordStatus = true;
+        }else{
+          stateCopy.formData.passwordStatus = false;
+        }
         this.setState(stateCopy)
     }
  
     
   render(){
     //验证Email
-    var reg = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-    if(reg.test(this.state.formData.email)){
-      this.state.formData.emailStatus = true;
-    }else{
-      this.state.formData.emailStatus = false;
-    }
+    
     //验证密码
       console.log(this.state)
       console.log(typeof(this.render))
@@ -109,7 +136,19 @@ export default class UserDialog extends Component{
   }
   resetPassword(e){
     e.preventDefault();
-    sendPasswordResetEmail(this.state.formData.email)
+    var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
+    let emailStatus = false;
+    if(!reg.test(this.formData.email)){
+      emailStatus = false;
+    }else{
+      emailStatus = true;
+    }
+    if(emailStatus){
+      sendPasswordResetEmail(this.state.formData.email)
+    }
+    else{
+      return false;
+    }
    }
    returnToSignIn(){
     let stateCopy = JSON.parse(JSON.stringify(this.state))

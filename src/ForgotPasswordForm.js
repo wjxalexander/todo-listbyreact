@@ -12,14 +12,12 @@ export default class ForgotPasswordForm extends Component {
               <input type="text" value={this.props.formData.email}
                 onChange={this.props.onChange.bind(null, 'email')}/>
             </div>
+            <p className = {this.props.formData.emailStatus ? "nondisplay" : "display"}>请输入正确的邮件地址</p>
             <div className="row actions">
               <button type="submit">发送重置邮件</button>
             </div>
           </form>
         </div>
         )
-}
-
-
-
+  }
 }
