@@ -76,9 +76,7 @@ import AV from 'leancloud-storage'
    var user = new AV.User()
    // 设置用户名
    user.setEmail(email)
-
    user.setUsername(username)
-
    // 设置密码
    user.setPassword(password)
    // 设置邮箱
@@ -88,9 +86,9 @@ import AV from 'leancloud-storage'
    }, function (error) {
      errorFn.call(null, error)
    })
- 
    return undefined
  }
+
  export function signIn(username, password, successFn, errorFn){
   AV.User.logIn(username, password).then(function (loginedUser) {
     let user = getUserFromAVUser(loginedUser)

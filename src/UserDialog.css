@@ -5,21 +5,60 @@
 
   }
   .UserDialog{
+    display: flex;
+    justify-content:center;
     border: 1px solid;
     border-radius: 4px;
-    min-width: 20em;
+    min-width: 300px;
     background: white;
     border: 1px solid #aaa;
     box-shadow: 0 0 1em hsla(0,0%,0%,0.35);
 }
-.UserDialog .signInOrSignUp > nav:first-child{ padding: 1em; margin-left: -2em;}
-.UserDialog .signInOrSignUp > nav:first-child label{ margin-left: 2em; cursor: pointer;}
-.UserDialog .signInOrSignUp > .panes { padding: 0 1em 1em; }
+.UserDialog .signInOrSignUp > nav{
+  display: flex; 
+  justify-content: center;
+  align-items: center;}
+.UserDialog .signInOrSignUp > nav:first-child{
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  padding: 1em;}
+.UserDialog .signInOrSignUp > nav:first-child label{padding: 0 15px;cursor: pointer;}
+.UserDialog .signInOrSignUp > .panes { 
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  padding: 0 1em 1em; }
+.UserDialog .signInOrSignUp > nav .activetab{border-bottom: 2px solid #0067b8;  color: #444;}
 .UserDialog .forgotPassword > h3 { padding: 1em; }
 .UserDialog .forgotPassword > form { padding: 0 1em 1em; }
  .UserDialog form>.row{ display: flex; padding: .3em 0; }
-.UserDialog form>.row>label:first-child{ width: 4em; }
-.UserDialog form>.row.actions{ padding-left: 4em; }
+.UserDialog form>.row.actions{ 
+  display: flex;
+  align-items: center;
+  padding-left: 4em; }
 .UserDialog form p.display{ display: block; color: red; font-size: 8px}
 .UserDialog form p.nondisplay{ display: none}
-
+.UserDialog input[type = submit]{
+  padding: 6px 20px;
+  border: none;
+  background: #0067b8;
+  box-shadow: 0px 0px 2px rgba(0,0,0,0.4);
+  color: #fff}
+  .UserDialog input[type = text],
+  .UserDialog input[type = password]{
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+    outline: none;
+    border-top-width: 0; 
+    border-left-width: 0; 
+    border-right-width: 0;
+    border-bottom: #000 solid 0.3px;
+  }
+  .UserDialog .signInOrSignUp .forgetpassword{
+    font-size: .8125rem;
+    text-decoration: none;
+    color: #0067b8;
+    display: block;
+    margin: 5px 0px;
+  }

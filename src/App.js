@@ -30,7 +30,7 @@ class App extends Component {
 
   render() {
     let todos = this.state.toDoList
-      .filter((item)=>!item.delete)//获取delete属性
+      .filter((item)=>!item.deleted)//获取delete属性
       .map((item,index)=> {
       return (// 为什么这里要加个括号？这是动手题3 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
       <li key={index}>
@@ -39,7 +39,7 @@ class App extends Component {
           onDelete = {this.delete.bind(this)}/>
       </li>);
     });
-    console.log("todo now is",todos);
+    console.log(this.state.user.id)
 
     return (
       <div className="App">
@@ -53,7 +53,7 @@ class App extends Component {
         You should either use quotes (for string values) or curly braces (for expressions), but not both in the same attribute.
           <input type = "text" value ={this.state.newToDo}/>
         */}
-         <TodoInput content={this.state.newTodo} 
+         <TodoInput content={this.state.newToDo} 
             onChange={this.changeTitle.bind(this)}//与
             onSubmit={this.addTodo.bind(this)} />
             {/*App 传一个函数给 TodoInput*/}
@@ -61,6 +61,7 @@ class App extends Component {
         <ol className = "todoList">
           {todos}
         </ol>
+        {/* 登陆框 */}
         {this.state.user.id ? 
           null : 
           <UserDialog 
@@ -74,8 +75,12 @@ class App extends Component {
   }
   signOut(){
     signOut()
-    this.deepCopy().user = {}
-    this.setState(this.deepCopy())
+    let stateCopy = this.deepCopy();
+    stateCopy.user = {};
+    this.setState(stateCopy)
+    // let stateCopy = JSON.parse(JSON.stringify(this.state))
+    // stateCopy.user = {}
+    // this.setState(stateCopy)
   }
 
   onSignUpOrSignIn(user){
@@ -95,31 +100,34 @@ class App extends Component {
       this.setState(this.state)
     }) 
   }
-  changeTitle(event){
+  changeTitle(event){//重置title
+    console.log("inevent",event.target.value)
     this.setState({
-      newTodo: event.target.value,
+      newToDo: event.target.value,
       toDoList: this.state.toDoList
     })
   }
   addTodo(event){
-    console.log('add a todo');
+    console.log('add a todo',event.target.value);
     let newToDo={
       title: event.target.value,
       status:'', 
       delete: false
     }
-    console.log('修改后的todolist是',this.state.toDoList)
   
-  TodoModel.create(newToDo, (id) => {
-    newToDo.id = id
-    this.state.todoList.push(newToDo)
-    this.setState({
-      newToDo: '',
-      todoList: this.state.todoList
+    TodoModel.create(newToDo, (id) => {
+      console.log("todomodel")
+      newToDo.id = id
+      this.state.toDoList.push(newToDo)
+      this.setState({
+        newToDo: '',
+        toDoList: this.state.toDoList
+      })
+    }, (error) => {
+      console.log(error)
     })
-  }, (error) => {
-    console.log(error)
-  })
+    console.log(this.state.toDoList)
+    console.log('修改后的event.target.value是',event.target.value)
 }
   delete(event, todo){
     console.log("我要删除了")

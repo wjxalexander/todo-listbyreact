@@ -63,11 +63,12 @@ export default class UserDialog extends Component{
           break
       }
     }
+    console.log(nameStatus,passwordStatus)
     if(nameStatus&&passwordStatus){
       signIn(username, password, success, error)
     }else{
       return false;
-    }
+   }
   }
   changeFormData(key,e){
         // this.state.formData.username = e.target.value
@@ -101,11 +102,7 @@ export default class UserDialog extends Component{
  
     
   render(){
-    //验证Email
-    
-    //验证密码
       console.log(this.state)
-      console.log(typeof(this.render))
     return (
       <div className="UserDialog-Wrapper">
         <div className="UserDialog">
@@ -129,11 +126,13 @@ export default class UserDialog extends Component{
       </div>
     )
   }
+
   showForgotPassword(){
     let stateCopy = JSON.parse(JSON.stringify(this.state))
     stateCopy.selectedTab = 'forgotPassword'
     this.setState(stateCopy)
   }
+
   resetPassword(e){
     e.preventDefault();
     var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
