@@ -1,4 +1,6 @@
 .TodoItem{
+    display: inline-block;
+    width: 60%;
     padding: .5em;
     display: flex;
     align-items: center;

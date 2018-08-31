@@ -6,12 +6,23 @@
   margin: 2em;
   padding: 0 1em;
   min-height: 20em;
-  min-width: 32em;
+  width: 100%;
   box-shadow: 0 0 1em hsla(0,0%,0%,0.15);
 }
-.App > .todoList> li:nth-child(odd){
+.App .todoList{
+  width: 60%;
+  margin-right: 20px;
+}
+.App  .todoList> li:nth-child(odd){
   background: #eee;
 }
-.App > .todoList> li:nth-child(even){
+.App  .todoList> li:nth-child(even){
   background: transparent;
+}
+.App .showpanel{
+  display: flex;
+  flex-wrap: wrap
+}
+.App .createbutton{
+  flex: 1;
 }

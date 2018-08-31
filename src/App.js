@@ -17,7 +17,6 @@ class App extends Component {
       toDoList:[]//初始化为[]
     }
   
-
   let user = getCurrentUser()
   if (user) {
     TodoModel.getByUser(user, (todos) => {
@@ -39,8 +38,9 @@ class App extends Component {
           onDelete = {this.delete.bind(this)}/>
       </li>);
     });
-    console.log(this.state.user.id)
+    console.log("todos:", todos)
 
+ 
     return (
       <div className="App">
         <h1>{this.state.user.username||'我'}的待办
@@ -58,9 +58,18 @@ class App extends Component {
             onSubmit={this.addTodo.bind(this)} />
             {/*App 传一个函数给 TodoInput*/}
         </div>
-        <ol className = "todoList">
-          {todos}
-        </ol>
+        <div class = 'showpanel'>
+          <ol className = "todoList">
+            {todos}
+          </ol>
+          <div>
+            <ol className = "achievedtodoList">
+            <p>12321</p>
+            </ol>
+            <button className='createbutton' onClick = {this.deletealllists.bind(this)}>重置todolist</button>
+          </div>
+        </div>
+        
         {/* 登陆框 */}
         {this.state.user.id ? 
           null : 
@@ -69,6 +78,17 @@ class App extends Component {
             onSignIn={this.onSignUpOrSignIn.bind(this)}/>}
       </div>
     )
+  }
+  deletealllists(){
+    console.log("我要全部删除了")
+    console.log(this.state.toDoList)
+    let length = this.state.toDoList.length;
+    if(length>0){
+      for(var i = 0; i< length; i++){
+        this.state.toDoList[i].deleted = true;
+        this.setState(this.state);
+      }
+    }
   }
   deepCopy(){
     return JSON.parse(JSON.stringify(this.state))
@@ -84,9 +104,11 @@ class App extends Component {
   }
 
   onSignUpOrSignIn(user){
-    this.deepCopy().user = user
-    this.setState(this.deepCopy())
+    let stateCopy = this.deepCopy();
+    stateCopy.user = user;
+    this.setState(stateCopy)
   }
+  
   componentDidUpdate(){
   }
 
@@ -112,7 +134,7 @@ class App extends Component {
     let newToDo={
       title: event.target.value,
       status:'', 
-      delete: false
+      deleted: false
     }
   
     TodoModel.create(newToDo, (id) => {
