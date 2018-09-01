@@ -65,8 +65,8 @@ import AV from 'leancloud-storage'
     }, (error) => errorFn && errorFn.call(null, error))
   },
   destroy(todoId, successFn, errorFn){
-  // 我们不应该删除数据，而是将数据标记为 deleted
-  TodoModel.update({id: todoId, deleted: true}, successFn, errorFn)
+    // 我们不应该删除数据，而是将数据标记为 deleted
+    TodoModel.update({id: todoId, deleted: true}, successFn, errorFn)
   }
  }
 

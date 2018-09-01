@@ -6,7 +6,6 @@ import 'normalize.css'
 import './reset.css'
 import UserDialog from './UserDialog';
 import {getCurrentUser, signOut, TodoModel} from './leanCloud'
-import AV from './leanCloud'
 
 class App extends Component {
   constructor(props){
@@ -14,7 +13,8 @@ class App extends Component {
     this.state = {
       user: getCurrentUser()||{},
       newToDo: '',
-      toDoList:[]//初始化为[]
+      toDoList:[],//初始化为[]
+      whichpannel: "currentpannel"
     }
   
   let user = getCurrentUser()
@@ -38,9 +38,21 @@ class App extends Component {
           onDelete = {this.delete.bind(this)}/>
       </li>);
     });
-    console.log("todos:", todos)
+    console.log("todos:", typeof(todos))
+    console.log('todoLissts,' ,this.state.toDoList)
 
- 
+    let oldlists =JSON.parse(JSON.stringify( this.state.toDoList))//获取delete属性
+    .filter((item)=>!item.deleted)
+    .map((item,index)=> {
+    return (// 为什么这里要加个括号？这是动手题3 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
+    <li key={index}>
+       <TodoItem todo={item} 
+        onToggle={this.toggle.bind(this)}
+        onDelete = {this.delete.bind(this)}/>
+    </li>);
+  });
+  console.log('old,' ,oldlists)
+
     return (
       <div className="App">
         <h1>{this.state.user.username||'我'}的待办
@@ -58,15 +70,20 @@ class App extends Component {
             onSubmit={this.addTodo.bind(this)} />
             {/*App 传一个函数给 TodoInput*/}
         </div>
-        <div class = 'showpanel'>
+        <div className = 'showpanel'>
+        {this.state.whichpannel === 'currentpannel' ? 
           <ol className = "todoList">
-            {todos}
-          </ol>
+          {todos}
+          </ol> : null}
+          {this.state.whichpannel === 'oldpanel' ? 
+          <ol className = "todoList">
+          {oldlists}
+          </ol> : null}
           <div>
-            <ol className = "achievedtodoList">
-            <p>12321</p>
-            </ol>
-            <button className='createbutton' onClick = {this.deletealllists.bind(this)}>重置todolist</button>
+            <div className = "achievedtodoList">
+            <button className='historybutton' onClick = {this.switchpannels.bind(this)}>查看历史</button>
+            <button className='createbutton' onClick = {this.resetalllists.bind(this)}>重置todolist</button>
+            </div>
           </div>
         </div>
         
@@ -79,17 +96,26 @@ class App extends Component {
       </div>
     )
   }
-  deletealllists(){
+
+ switchpannels(){
+   this.state.whichpannel='oldpanel'
+   let length = this.state.toDoList.length;
+    for(var i =0; i <length; i++){
+      this.state.toDoList[i].deleted = false;
+    }
+   this.setState(this.state)
+ }
+  resetalllists(){
     console.log("我要全部删除了")
     console.log(this.state.toDoList)
+    this.state.whichpannel = 'currentpannel'
     let length = this.state.toDoList.length;
-    if(length>0){
-      for(var i = 0; i< length; i++){
-        this.state.toDoList[i].deleted = true;
-        this.setState(this.state);
-      }
+    for(var i =0; i <length; i++){
+      this.state.toDoList[i].deleted = true;
     }
+    this.setState(this.state);    
   }
+
   deepCopy(){
     return JSON.parse(JSON.stringify(this.state))
   }
@@ -157,6 +183,8 @@ class App extends Component {
       todo.deleted = true
       this.setState(this.state)
     })
+    console.log("todo：", todo)
+    console.log("todode：", todo.deleted)
   }
 }
 export default App;
