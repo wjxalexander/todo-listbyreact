@@ -1,6 +1,7 @@
 .TodoItem{
+    position: relative;
     display: inline-block;
-    width: 60%;
+    width: 100%;
     padding: .5em;
     display: flex;
     align-items: center;
@@ -9,3 +10,21 @@
     flex-grow: 1;
     padding: 0 .5em;
   }
+  .TodoItem .deleteitem{
+    position: absolute;
+    right: 20px;
+    font-size: 10px;
+    cursor: pointer;
+ }
+ .TodoItem .deleteitem:hover{
+  color: orange;
+}
+.TodoItem .deleteitem:hover{
+  color: orange;
+}
+.TodoItem #completedcheck{
+  color: green;
+}
+.TodoItem:hover{
+  background: rgba(178,	175,	175, 0.1)
+}

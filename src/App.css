@@ -6,17 +6,16 @@
   margin: 2em;
   padding: 0 1em;
   min-height: 20em;
-  width: 100%;
+  width: 50%;
   box-shadow: 0 0 1em hsla(0,0%,0%,0.15);
 }
 .App .todoList{
   width: 60%;
   margin-right: 20px;
 }
-.App  .todoList> li:nth-child(odd){
-  background: #eee;
-}
-.App  .todoList> li:nth-child(even){
+
+.App  .todoList  li
+{ border-bottom: #ccc solid 0.4px;
   background: transparent;
 }
 .App .showpanel{
@@ -25,4 +24,17 @@
 }
 .App .createbutton{
   margin-right: 10px;
+}
+.App>.topbar{
+  position: relative;
+}
+.App>.topbar .signoutbtn{
+  cursor:pointer;
+  color: red;
+  position: absolute;
+  right: 20px;
+  top: 10px
+}
+.App>.topbar h1{
+  font-size: 30px;
 }

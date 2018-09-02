@@ -5,6 +5,7 @@ export default function (props) {
     <form className="signUp" onSubmit={props.onSubmit.bind(this)}> {/* 注册*/}
       <div className="row">
         <label>
+        <i class="far fa-envelope"></i>
         <input type="text" value={props.formData.email}
           placeholder = "邮箱地址"
           onChange={props.onChange.bind(null, 'email')}/>
@@ -13,6 +14,7 @@ export default function (props) {
       <p className = {props.formData.emailStatus ? "nondisplay" : "display"}>请输入正确的邮件地址</p>
       <div className="row">
         <label>
+        <i className="fas fa-user"></i>
         <input type="text" value={props.formData.username}
         placeholder = "用户名"
           onChange={props.onChange.bind(null, 'username')}/>
@@ -23,6 +25,7 @@ export default function (props) {
       <p className = {props.formData.nameStatus ? "nondisplay" : "display"}>用户名必须大于三个字符</p>
       <div className="row">
         <label>
+        <i class="fas fa-key"></i>
         <input type="password" value={props.formData.password}
           placeholder = "密码"
           onChange={props.onChange.bind(null, 'password')}/>

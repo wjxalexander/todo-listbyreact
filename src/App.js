@@ -7,6 +7,7 @@ import './reset.css'
 import UserDialog from './UserDialog';
 import {getCurrentUser, signOut, TodoModel} from './leanCloud'
 
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -44,7 +45,12 @@ class App extends Component {
       .map((item,index) => {
         console.log('item',item)
         return (
-          <li key={index}>{item}</li>
+        <label>
+          <i className="fas fa-list-ul"></i>
+          <li onClick={this.createnewlist.bind(this)} key={index}>
+          {item.title+item.id}
+          </li>
+          </label>
         )
       })
 
@@ -52,9 +58,14 @@ class App extends Component {
     console.log('todoLissts,' ,this.state.toDoList)
     return (
       <div className="App">
-        <h1>{this.state.user.username||'我'}的待办
-          {this.state.user.id ? <button onClick={this.signOut.bind(this)}>登出</button> : null}
-        </h1>
+        <div className='topbar'>
+        <h1>{this.state.user.username||'我'}的待办</h1>
+        {this.state.user.id ? 
+        <a className= 'signoutbtn' onClick={this.signOut.bind(this)}>
+        <i className="fas fa-sign-out-alt"></i>
+        Sign out
+        </a> : null}
+     </div>
         <div className = 'inputWrapper'>
         {/*两个注意的点：
         1. If a tag is empty, you may close it immediately with />, like XML
@@ -96,7 +107,9 @@ class App extends Component {
       </div>
     )
   }
-
+  createnewlist(){
+    this.resetalllists()
+  }
   deleteall(){
     let stateCopy = this.deepCopy();
     stateCopy.toDoList = [];
@@ -163,7 +176,8 @@ class App extends Component {
   createpara(e){
     console.log(e,'add para')
     this.state.planlist.push({
-      title: "代办1"
+      id: idMaker(),
+      title: "代办"
     })
     this.setState({planlist: this.state.planlist})
     console.log('plainlist',this.state.planlist)
@@ -176,7 +190,6 @@ class App extends Component {
       status:'', 
       deleted: false
     }
-  
     TodoModel.create(newToDo, (id) => {
       console.log("todomodel")
       newToDo.id = id
@@ -188,8 +201,6 @@ class App extends Component {
     }, (error) => {
       console.log(error)
     })
-    console.log(this.state.toDoList)
-    console.log('修改后的event.target.value是',event.target.value)
 }
   delete(event, todo){
     console.log("我要删除了")
@@ -202,7 +213,11 @@ class App extends Component {
   }
 }
 export default App;
-
+let listid = 0
+ function idMaker(){
+  listid += 1
+  return listid
+}
 /*
 动手题1： import React from 'react'; // 为什么要 import React
 class Welcome extends React.Component {

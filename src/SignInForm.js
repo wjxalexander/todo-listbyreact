@@ -1,10 +1,12 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function (props) {
   return (
     <form className="signIn" onSubmit={props.onSubmit}> {/* 登录*/}
       <div className="row">
         <label>
+        <i className="fas fa-user"></i>
         <input type="text" value={props.formData.username}
           placeholder = "用户名" 
           onChange={props.onChange.bind(null, 'username')}/>
@@ -12,6 +14,7 @@ export default function (props) {
       </div>
       <div className="row">
         <label>
+        <i class="fas fa-key"></i>
         <input type="password" value={props.formData.password}
           placeholder = "密码" 
           onChange={props.onChange.bind(null, 'password')}/>

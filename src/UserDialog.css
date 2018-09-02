@@ -1,7 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .UserDialog-Wrapper{ 
     /*全屏*/      position: fixed; top: 0; left: 0; bottom: 0; right: 0; 
     /*内容居中*/  display: flex; justify-content: center; align-items: center;
-    background: hsla(0,0%,0%,0.40);/*遮罩效果*/
+    background:linear-gradient(to right top, rgba(38,50,105,0.5), rgba(38,50,105,0.5)), url(./backimg/Neuschwanstein.jpg);
 
   }
   .UserDialog{
@@ -9,34 +14,48 @@
     justify-content:center;
     border: 1px solid;
     border-radius: 4px;
-    min-width: 300px;
+    max-width: 440px;
+    width: calc(100% - 40px);
     background: white;
     border: 1px solid #aaa;
     box-shadow: 0 0 1em hsla(0,0%,0%,0.35);
+    padding: 44px;
+}
+.UserDialog .signInOrSignUp{
+  width: 100%;
 }
 .UserDialog .signInOrSignUp > nav{
   display: flex; 
   justify-content: center;
-  align-items: center;}
+  align-items: center;
+}
 .UserDialog .signInOrSignUp > nav:first-child{
+  width: 100%;
   display: flex; 
   justify-content: center;
   align-items: center;
-  padding: 1em;}
+  padding: 0.7em;
+}
 .UserDialog .signInOrSignUp > nav:first-child label{padding: 0 15px;cursor: pointer;}
 .UserDialog .signInOrSignUp > .panes { 
   display: flex;
   justify-content:center;
   align-items: center;
   padding: 0 1em 1em; }
-.UserDialog .signInOrSignUp > nav .activetab{border-bottom: 2px solid #0067b8;  color: #444;}
-.UserDialog .forgotPassword > h3 { padding: 1em; }
-.UserDialog .forgotPassword > form { padding: 0 1em 1em; }
- .UserDialog form>.row{ display: flex; padding: .3em 0; }
+.UserDialog .signInOrSignUp > nav .activetab
+{border-bottom: 2px solid #0067b8;  
+  color: #0067b8;
+}
+.UserDialog .forgotPassword > h3
+ { padding: 1em; }
+.UserDialog .forgotPassword > form 
+{ padding: 0 1em 1em; }
+ .UserDialog form>.row
+ { display: flex; padding: .3em 0; }
 .UserDialog form>.row.actions{ 
   display: flex;
   align-items: center;
-  padding-left: 4em; }
+   }
 .UserDialog form p.display{ display: block; color: red; font-size: 8px}
 .UserDialog form p.nondisplay{ display: none}
 .UserDialog input[type = submit]{
@@ -48,7 +67,7 @@
   .UserDialog input[type = text],
   .UserDialog input[type = password]{
     width: 100%;
-    padding: 5px 5px 5px 5px;
+    padding: 10px 10px 10px 28px;
     outline: none;
     border-top-width: 0; 
     border-left-width: 0; 
@@ -61,4 +80,21 @@
     color: #0067b8;
     display: block;
     margin: 5px 0px;
+  }
+  .UserDialog .panes label{
+    display: block;
+    position: relative;
+    width: 100%;
+  }
+  .UserDialog .fas,  
+  .UserDialog .far{
+    position: absolute;
+    color: #666;
+    left: 7px;
+    top: 13px;
+    font-size: 15px;
+  } 
+  .UserDialog form{
+    width: 90%;
+    margin: 0 auto;
   }
