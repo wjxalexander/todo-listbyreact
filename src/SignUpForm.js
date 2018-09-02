@@ -5,7 +5,7 @@ export default function (props) {
     <form className="signUp" onSubmit={props.onSubmit.bind(this)}> {/* 注册*/}
       <div className="row">
         <label>
-        <i class="far fa-envelope"></i>
+        <i className="far fa-envelope"></i>
         <input type="text" value={props.formData.email}
           placeholder = "邮箱地址"
           onChange={props.onChange.bind(null, 'email')}/>

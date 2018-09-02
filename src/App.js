@@ -45,26 +45,37 @@ class App extends Component {
       .map((item,index) => {
         console.log('item',item)
         return (
-        <label>
-          <i className="fas fa-list-ul"></i>
           <li onClick={this.createnewlist.bind(this)} key={index}>
+          <i className="fas fa-list-ul"></i>
           {item.title+item.id}
           </li>
-          </label>
         )
       })
 
-    console.log("todos:", typeof(todos))
-    console.log('todoLissts,' ,this.state.toDoList)
     return (
       <div className="App">
         <div className='topbar'>
         <h1>{this.state.user.username||'我'}的待办</h1>
-        {this.state.user.id ? 
-        <a className= 'signoutbtn' onClick={this.signOut.bind(this)}>
-        <i className="fas fa-sign-out-alt"></i>
-        Sign out
-        </a> : null}
+        <p>{new Date().toLocaleDateString()}</p>
+        <li className='navbar'>
+          <i class="fas fa-ellipsis-h"></i>
+          <ul className = 'child'>
+          <li>
+            <a className='deleallbutton' onClick = {this.deleteall.bind(this)}>
+              <i class="fas fa-minus-circle"></i>
+              Delete All
+            </a>
+          </li>
+          <li>
+          {this.state.user.id ? 
+              <a className= 'signoutbtn' onClick={this.signOut.bind(this)}>
+              <i className="fas fa-sign-out-alt"></i>
+              Sign out
+              </a> : null}
+          </li>
+          </ul>
+        </li>
+        
      </div>
         <div className = 'inputWrapper'>
         {/*两个注意的点：
@@ -88,12 +99,15 @@ class App extends Component {
           <ol className = "todoList">
           {todos}
           </ol> : null}
-          <div>
+          <div className='showlists'>
+          <ul className='planlists'>
           {planlists}
-            <div className = "achievedtodoList">
-            <button className='createbutton' onClick = {this.resetalllists.bind(this)}>重置todolist</button>
-            <button className='deleallbutton' onClick = {this.deleteall.bind(this)}>删除所有</button>
-            <button className='historybutton' onClick = {this.createpara.bind(this)}>add</button>
+          </ul>
+            <div className = "createdtodoList">
+            <a className='creatnew' onClick =  {this.createpara.bind(this)}>
+            <i class="fas fa-plus"></i>
+              新建清单
+            </a>
             </div>
           </div>
         </div>
@@ -125,7 +139,6 @@ class App extends Component {
  }
   resetalllists(){
     console.log("我要全部删除了")
-    console.log(this.state.toDoList)
     this.state.whichpannel = 'currentpannel'
     let length = this.state.toDoList.length;
     for(var i =0; i <length; i++){
@@ -146,16 +159,13 @@ class App extends Component {
     // stateCopy.user = {}
     // this.setState(stateCopy)
   }
-
   onSignUpOrSignIn(user){
     let stateCopy = this.deepCopy();
     stateCopy.user = user;
     this.setState(stateCopy)
   }
-  
   componentDidUpdate(){
   }
-
   toggle(e,todo){
     let oldStatus = todo.status
     todo.status = todo.status === 'completed' ? '' : 'completed'
@@ -180,7 +190,6 @@ class App extends Component {
       title: "代办"
     })
     this.setState({planlist: this.state.planlist})
-    console.log('plainlist',this.state.planlist)
 
   }
   addTodo(event){
@@ -208,8 +217,6 @@ class App extends Component {
       todo.deleted = true
       this.setState(this.state)
     })
-    console.log("todo：", todo)
-    console.log("todode：", todo.deleted)
   }
 }
 export default App;
