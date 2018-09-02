@@ -2,6 +2,7 @@
   "name": "practice",
   "version": "0.1.0",
   "private": true,
+  "homepage": " https://wjxalexander.github.io/todo-listbyreact/build",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.4",
     "@fortawesome/free-solid-svg-icons": "^5.3.1",

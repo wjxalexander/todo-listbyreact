@@ -177,7 +177,6 @@ class App extends Component {
     }) 
   }
   changeTitle(event){//重置title
-    console.log("inevent",event.target.value)
     this.setState({
       newToDo: event.target.value,
       toDoList: this.state.toDoList
