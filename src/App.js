@@ -14,14 +14,16 @@ class App extends Component {
       user: getCurrentUser()||{},
       newToDo: '',
       toDoList:[],//初始化为[]
-      whichpannel: "currentpannel"
+      whichpannel: "currentpannel",
+      planlist:[]
+
     }
   
   let user = getCurrentUser()
   if (user) {
     TodoModel.getByUser(user, (todos) => {
       let stateCopy = JSON.parse(JSON.stringify(this.state))
-      stateCopy.todoList = todos
+      stateCopy.toDoList = todos
       this.setState(stateCopy)
     })
   }
@@ -38,21 +40,16 @@ class App extends Component {
           onDelete = {this.delete.bind(this)}/>
       </li>);
     });
+    let planlists = this.state.planlist
+      .map((item,index) => {
+        console.log('item',item)
+        return (
+          <li key={index}>{item}</li>
+        )
+      })
+
     console.log("todos:", typeof(todos))
     console.log('todoLissts,' ,this.state.toDoList)
-
-    let oldlists =JSON.parse(JSON.stringify( this.state.toDoList))//获取delete属性
-    .filter((item)=>!item.deleted)
-    .map((item,index)=> {
-    return (// 为什么这里要加个括号？这是动手题3 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
-    <li key={index}>
-       <TodoItem todo={item} 
-        onToggle={this.toggle.bind(this)}
-        onDelete = {this.delete.bind(this)}/>
-    </li>);
-  });
-  console.log('old,' ,oldlists)
-
     return (
       <div className="App">
         <h1>{this.state.user.username||'我'}的待办
@@ -68,6 +65,7 @@ class App extends Component {
          <TodoInput content={this.state.newToDo} 
             onChange={this.changeTitle.bind(this)}//与
             onSubmit={this.addTodo.bind(this)} />
+
             {/*App 传一个函数给 TodoInput*/}
         </div>
         <div className = 'showpanel'>
@@ -77,12 +75,14 @@ class App extends Component {
           </ol> : null}
           {this.state.whichpannel === 'oldpanel' ? 
           <ol className = "todoList">
-          {oldlists}
+          {todos}
           </ol> : null}
           <div>
+          {planlists}
             <div className = "achievedtodoList">
-            <button className='historybutton' onClick = {this.switchpannels.bind(this)}>查看历史</button>
             <button className='createbutton' onClick = {this.resetalllists.bind(this)}>重置todolist</button>
+            <button className='deleallbutton' onClick = {this.deleteall.bind(this)}>删除所有</button>
+            <button className='historybutton' onClick = {this.createpara.bind(this)}>add</button>
             </div>
           </div>
         </div>
@@ -97,6 +97,11 @@ class App extends Component {
     )
   }
 
+  deleteall(){
+    let stateCopy = this.deepCopy();
+    stateCopy.toDoList = [];
+    this.setState(stateCopy)
+  }
  switchpannels(){
    this.state.whichpannel='oldpanel'
    let length = this.state.toDoList.length;
@@ -154,6 +159,15 @@ class App extends Component {
       newToDo: event.target.value,
       toDoList: this.state.toDoList
     })
+  }
+  createpara(e){
+    console.log(e,'add para')
+    this.state.planlist.push({
+      title: "代办1"
+    })
+    this.setState({planlist: this.state.planlist})
+    console.log('plainlist',this.state.planlist)
+
   }
   addTodo(event){
     console.log('add a todo',event.target.value);
