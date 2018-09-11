@@ -34,7 +34,7 @@ class App extends Component {
     let todos = this.state.toDoList
       .filter((item)=>!item.deleted)//获取delete属性
       .map((item,index)=> {
-      return (// 为什么这里要加个括号？这是动手题3 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
+      return (// 在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
       <li key={index}>
          <TodoItem todo={item} 
           onToggle={this.toggle.bind(this)}
@@ -225,7 +225,7 @@ let listid = 0
   return listid
 }
 /*
-动手题1： import React from 'react'; // 为什么要 import React
+import React from 'react'; // 为什么要 import React
 class Welcome extends React.Component {
   render() {
     return <h1>Hello, Component</h1>;
@@ -248,10 +248,7 @@ import foo from "foo";
 foo(); // hello!
 因为是默认倒出，因此在import的时候任何命名都是一样的
 
-很奇怪，input 里的文字用 input.value 就可以获得了，为什么还要用 newTodo 来容纳呢？看完教程你就懂了。
+input 里的文字用 input.value 就可以获得了，为什么还要用 newTodo 来容纳？
 方便setState,每添加一个todolist只需要改newtodo就好了
-
-为什么这里要加个括号？这是动手题3 
-在JS中JavaScript 会自动给行末添加分号。如果 return 后面换行不加括号就会变成 return; 当然不换行一步写完也是可以的，只是难以阅读
 
 */
