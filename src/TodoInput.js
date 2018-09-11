@@ -10,9 +10,8 @@ function submit (props, e) {
 function changeTitle (props, e) {
     props.onChange(e)
   }
-   // 搞不清楚 bind 用法的同学，请看完 MDN
+   // bind：
   // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-  // 尤其是示例要看懂
    export default function (props) {
     console.log('in-todoinput', props)
     return <input type="text" value={props.content}
